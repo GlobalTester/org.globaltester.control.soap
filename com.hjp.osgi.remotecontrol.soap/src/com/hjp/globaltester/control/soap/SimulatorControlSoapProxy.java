@@ -7,6 +7,11 @@ import javax.jws.soap.SOAPBinding.Style;
 
 import com.hjp.simulator.SimulatorControl;
 
+/**
+ * SOAP proxy for {@link SimulatorControl} objects.
+ * @author mboonk
+ *
+ */
 @WebService
 @SOAPBinding(style = Style.RPC)
 public class SimulatorControlSoapProxy extends AbstractProxy<SimulatorControl> implements SimulatorControl {

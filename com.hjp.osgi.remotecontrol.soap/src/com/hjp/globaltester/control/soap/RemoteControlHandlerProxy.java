@@ -7,6 +7,11 @@ import javax.jws.soap.SOAPBinding.Style;
 
 import com.hjp.globaltester.control.RemoteControlHandler;
 
+/**
+ * SOAP proxy for {@link RemoteControlHandler} objects.
+ * @author mboonk
+ *
+ */
 @WebService
 @SOAPBinding(style = Style.RPC)
 public class RemoteControlHandlerProxy extends AbstractProxy<RemoteControlHandler> implements RemoteControlHandler{

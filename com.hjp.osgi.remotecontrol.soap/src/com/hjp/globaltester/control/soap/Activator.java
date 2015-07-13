@@ -14,6 +14,11 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 import com.hjp.globaltester.control.RemoteControlHandler;
 import com.hjp.simulator.SimulatorControl;
 
+/**
+ * This manages the services needed to supply the 
+ * @author mboonk
+ *
+ */
 public class Activator implements BundleActivator {
 
 	private static BundleContext context;
