@@ -1,0 +1,2 @@
+wsimport -keep -verbose http://localhost:8888/globaltester/control?wsdl -d gen
+wsimport -keep -verbose http://localhost:8888/globaltester/simulatorSampleService?wsdl -d gen
