@@ -54,6 +54,7 @@ public class SampleSoapService extends AbstractRemoteControlHandler implements
 			reset();
 			return false;
 		}
+		simulatorRunning = false;
 		return true;
 	}
 
