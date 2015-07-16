@@ -15,7 +15,7 @@ import com.hjp.globaltester.control.RemoteControlHandler;
 import com.hjp.simulator.SimulatorControl;
 
 /**
- * This manages the services needed to supply the 
+ * This manages the services needed to supply the SOAP {@link Endpoint}
  * @author mboonk
  *
  */
