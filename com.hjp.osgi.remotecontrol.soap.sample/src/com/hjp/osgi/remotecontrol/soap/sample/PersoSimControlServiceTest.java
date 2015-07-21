@@ -21,7 +21,7 @@ import com.hjp.simulator.SimulatorControl;
  * purposes. This behavior is implemented by the {@link SampleSoapService} class
  * in this bundle.
  * 
- * @author mboonk
+ * @author jgoeke
  *
  */
 public class PersoSimControlServiceTest {
@@ -78,12 +78,24 @@ public class PersoSimControlServiceTest {
 		printStringArray(params);
 		printStatusAndGetError(port.updateState("Date", params), port);
 
-		System.out.println("Read the state: ");
+		System.out.println("Read TrustPoint: ");
 		printStringArray(port.getState("TrustPoint", new StringArray()));
 		System.out.println("\n");
 
 		System.out.println("Read non existing state: ");
 		printStringArray(port.getState("notThere", new StringArray()));
+		System.out.println("\n");
+		
+		System.out.println("Read EfCardAccess: ");
+		printStringArray(port.getState("getEfCardAccess", new StringArray()));
+		System.out.println("\n");
+		
+		System.out.println("Read EfCardSecurity: ");
+		printStringArray(port.getState("getEfCardSecurity", new StringArray()));
+		System.out.println("\n");
+		
+		System.out.println("Read EfChipSecurity: ");
+		printStringArray(port.getState("getEfChipSecurity", new StringArray()));
 		System.out.println("\n");
 
 		System.out.println("Start the simulator: ");
