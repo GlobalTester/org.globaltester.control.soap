@@ -28,8 +28,7 @@ public class PersoSimControlServiceTest {
 	private static SoapServiceProviderService service = new SoapServiceProviderService();
 
 	/**
-	 * @param args
-	 *            the command line arguments
+	 * @param args the command line arguments
 	 * @throws MalformedURLException 
 	 */
 	public static void main(String[] args) throws MalformedURLException {
