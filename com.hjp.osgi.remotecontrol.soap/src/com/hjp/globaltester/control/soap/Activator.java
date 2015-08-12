@@ -42,6 +42,7 @@ public class Activator implements BundleActivator {
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
+		
 		try {
 			controlEndpoint = Endpoint.publish("http://localhost:8888/globaltester/control",
 					new SoapServiceProvider(data));
@@ -89,13 +90,6 @@ public class Activator implements BundleActivator {
 		additionalEndpoints = new LinkedList<>();
 		handlerTracker = new ServiceTracker<>(bundleContext, RemoteControlHandler.class, handlerCustomizer);
 		handlerTracker.open();
-		//initial setup for existing services
-		Object [] handlerServices = handlerTracker.getServices();
-		if (handlerServices != null){
-			for (Object handler : handlerServices){
-				handleRemoteControl((RemoteControlHandler)handler);
-			}	
-		}
 	}
 
 	private void handleRemoteControl(RemoteControlHandler handlerService){
