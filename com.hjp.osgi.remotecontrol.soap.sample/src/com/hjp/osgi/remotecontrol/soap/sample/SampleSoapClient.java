@@ -1,5 +1,8 @@
 package com.hjp.osgi.remotecontrol.soap.sample;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import net.java.dev.jaxb.array.StringArray;
 
 import com.hjp.globaltester.control.soap.SimulatorControlSoapProxy;
@@ -27,19 +30,21 @@ public class SampleSoapClient {
 	/**
 	 * @param args
 	 *            the command line arguments
+	 * @throws MalformedURLException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws MalformedURLException {
 		SoapServiceProvider port = service.getSoapServiceProviderPort();
+		System.out.println("Control handler availiable, check for others");
 		for (String string : port.getAvailableHandlers().getItem()) {
 			System.out.println("Handler: " + string);
-			if (string.equals("simulatorSampleService")) {
-				useSimulator();
+			if (string.equals("SimulatorControl")) {
+				useSimulator(new URL("http://localhost:8888/globaltester/" + string));
 			}
 		}
 	}
 
-	private static void useSimulator() {
-		SimulatorControlSoapProxyService service = new SimulatorControlSoapProxyService();
+	private static void useSimulator(URL wsdlLocation) {
+		SimulatorControlSoapProxyService service = new SimulatorControlSoapProxyService(wsdlLocation);
 		SimulatorControlSoapProxy port = service
 				.getSimulatorControlSoapProxyPort();
 		System.out
@@ -49,7 +54,7 @@ public class SampleSoapClient {
 		System.out.println("Try to load configuration: " + config);
 		printStatusAndGetError(port.loadConfiguration(config), port);
 
-		config = "sampleConfig";
+		config = "gt_default_nPA";
 		System.out.println("Try to load configuration: " + config);
 		printStatusAndGetError(port.loadConfiguration(config), port);
 

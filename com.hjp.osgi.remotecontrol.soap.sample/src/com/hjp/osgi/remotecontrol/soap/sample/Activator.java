@@ -12,7 +12,6 @@ public class Activator implements BundleActivator {
 
 	@Override
 	public void start(BundleContext context) throws Exception {
-		//FIXME MBK remove dummy
 		RemoteControlHandler dummyService = new SampleSoapService();
 		serviceRegistration = context.registerService(RemoteControlHandler.class, dummyService, null);
 	}
