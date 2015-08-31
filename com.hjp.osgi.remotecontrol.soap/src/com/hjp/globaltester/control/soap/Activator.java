@@ -28,7 +28,7 @@ public class Activator implements BundleActivator {
 	private ServiceTracker<RemoteControlHandler, RemoteControlHandler> handlerTracker;
 	private ServiceTrackerCustomizer<RemoteControlHandler, RemoteControlHandler> handlerCustomizer;
 
-	static BundleContext getContext() {
+	public static BundleContext getContext() {
 		return context;
 	}
 
