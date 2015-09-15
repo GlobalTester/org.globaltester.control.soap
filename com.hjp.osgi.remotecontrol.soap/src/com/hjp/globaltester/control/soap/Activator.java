@@ -5,13 +5,14 @@ import java.util.List;
 
 import javax.xml.ws.Endpoint;
 
-import org.osgi.framework.BundleActivator;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 import com.hjp.globaltester.control.RemoteControlHandler;
+import com.hjp.osgi.remotecontrol.soap.preferences.PreferenceConstants;
 import com.hjp.simulator.SimulatorControl;
 
 /**
@@ -19,15 +20,19 @@ import com.hjp.simulator.SimulatorControl;
  * @author mboonk
  *
  */
-public class Activator implements BundleActivator {
+public class Activator extends AbstractUIPlugin {
 
 	private static BundleContext context;
+	private static Activator plugin;
 	private Endpoint controlEndpoint;
 	private List<Endpoint> additionalEndpoints;
 	private SoapServiceProviderData data = new SoapServiceProviderData();
 	private ServiceTracker<RemoteControlHandler, RemoteControlHandler> handlerTracker;
 	private ServiceTrackerCustomizer<RemoteControlHandler, RemoteControlHandler> handlerCustomizer;
 
+	private String host;
+	private int port;
+	
 	public static BundleContext getContext() {
 		return context;
 	}
@@ -42,9 +47,13 @@ public class Activator implements BundleActivator {
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
+		Activator.plugin = this;
+		
+		host = getPreferenceStore().getString(PreferenceConstants.P_SOAP_HOST);
+		port = getPreferenceStore().getInt(PreferenceConstants.P_SOAP_PORT);
 		
 		try {
-			controlEndpoint = Endpoint.publish("http://localhost:8888/globaltester/control",
+			controlEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/control",
 					new SoapServiceProvider(data));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -92,14 +101,18 @@ public class Activator implements BundleActivator {
 		handlerTracker.open();
 	}
 
+	public static Activator getDefault() {
+		return plugin;
+	}
+
 	private void handleRemoteControl(RemoteControlHandler handlerService){
 		data.addHandler(handlerService);
 		Endpoint newEndpoint;
 		if (handlerService instanceof SimulatorControl){
-			newEndpoint = Endpoint.publish("http://localhost:8888/globaltester/" + handlerService.getIdentifier(),
+			newEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/" + handlerService.getIdentifier(),
 					new SimulatorControlSoapProxy((SimulatorControl)handlerService));
 		} else {
-			newEndpoint = Endpoint.publish("http://localhost:8888/globaltester/" + handlerService.getIdentifier(),
+			newEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/" + handlerService.getIdentifier(),
 				new RemoteControlHandlerProxy(handlerService));
 		}
 		additionalEndpoints.add(newEndpoint);
@@ -115,7 +128,13 @@ public class Activator implements BundleActivator {
 	public void stop(BundleContext bundleContext) throws Exception {
 		handlerTracker.close();
 		controlEndpoint.stop();
+		controlEndpoint = null;
+		
+		for (Endpoint endpoint : additionalEndpoints){
+			endpoint.stop();
+		}
+		additionalEndpoints.clear();
+		
 		Activator.context = null;
 	}
-	
 }
