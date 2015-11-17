@@ -11,3 +11,4 @@ Require-Bundle: com.hjp.osgi.remotecontrol,
  com.hjp.simulator
 Export-Package: com.hjp.globaltester.control.soap,
  net.java.dev.jaxb.array
+Bundle-Vendor: HJP Consulting GmbH
