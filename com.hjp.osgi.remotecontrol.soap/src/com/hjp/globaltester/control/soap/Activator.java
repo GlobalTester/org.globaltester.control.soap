@@ -189,6 +189,10 @@ public class Activator extends AbstractUIPlugin {
 		}	
 	}
 	
+	/**
+	 * Adds an error (about Socket for SOAP already in use) to the eclipse
+	 * logging view
+	 */
 	private void logSocketError() {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
