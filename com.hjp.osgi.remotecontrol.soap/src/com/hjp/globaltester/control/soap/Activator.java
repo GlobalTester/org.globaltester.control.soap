@@ -8,10 +8,13 @@ import java.util.List;
 
 import javax.xml.ws.Endpoint;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
@@ -38,6 +41,7 @@ public class Activator extends AbstractUIPlugin {
 
 	private String host;
 	private int port;
+	private boolean soapDeactivated;
 	
 	public static BundleContext getContext() {
 		return context;
@@ -57,20 +61,32 @@ public class Activator extends AbstractUIPlugin {
 		
 		host = getPreferenceStore().getString(PreferenceConstants.P_SOAP_HOST);
 		port = getPreferenceStore().getInt(PreferenceConstants.P_SOAP_PORT);
+		soapDeactivated = getPreferenceStore().getBoolean(PreferenceConstants.P_SOAP_DEACTIVATED); 
 		
 		// warn the User if Socket is already in use
-		if (!isSocketAvailable(host, port)) {
+		if (!isSocketAvailable(host, port) && !soapDeactivated) {
 			Display display = new Display();
 			Shell shell = new Shell(display);
-			MessageDialog.openWarning(shell, "Warning", "Socket for SOAP already in use!\n" + "Tried Host: " + host
-					+ " with Port " + port + "\nThis is a common issue if multiple GlobalTesters are started.");
+			MessageDialog.openWarning(shell, "Warning",
+					"Socket for SOAP already in use by another service!\n" + "Tried Host: " + host + " with Port "
+							+ port + "Please change them in your GlobalTester preferences.\n"
+							+ "This is a common issue if multiple GlobalTesters are started.");
 		}
 		
 		try {
 			controlEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/control",
 					new SoapServiceProvider(data));
 		} catch (Exception e) {
-			e.printStackTrace();
+			int errorLevel = IStatus.ERROR;
+			String message = "Socket for SOAP is already in use by another Service";
+			
+			if(soapDeactivated){
+				errorLevel = IStatus.WARNING;
+				message = "Socket for SOAP is already in use by another Service, but its deactivated anyway";
+			}
+			
+			IStatus status = new Status(errorLevel, "com.hjp.osgi.remotecontrol.soap", message, e);			
+			StatusManager.getManager().handle(status, StatusManager.LOG);
 		}
 
 		// This will be used to keep track of handlers as they are un/registering
@@ -122,14 +138,28 @@ public class Activator extends AbstractUIPlugin {
 	private void handleRemoteControl(RemoteControlHandler handlerService){
 		data.addHandler(handlerService);
 		Endpoint newEndpoint;
-		if (handlerService instanceof SimulatorControl){
-			newEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/" + handlerService.getIdentifier(),
-					new SimulatorControlSoapProxy((SimulatorControl)handlerService));
-		} else {
-			newEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/" + handlerService.getIdentifier(),
-				new RemoteControlHandlerProxy(handlerService));
+		try{
+			if (handlerService instanceof SimulatorControl){
+				newEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/" + handlerService.getIdentifier(),
+						new SimulatorControlSoapProxy((SimulatorControl)handlerService));
+			} else {
+				newEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/" + handlerService.getIdentifier(),
+					new RemoteControlHandlerProxy(handlerService));
+			}
+			additionalEndpoints.add(newEndpoint);
+		} catch (Exception e) {
+			
+			int errorLevel = IStatus.ERROR;
+			String message = "Socket for SOAP is already in use by another Service";
+			
+			if(soapDeactivated){
+				errorLevel = IStatus.WARNING;
+				message = "Socket for SOAP is already in use by another Service, but its deactivated anyway";
+			}
+			
+			IStatus status = new Status(errorLevel, "com.hjp.osgi.remotecontrol.soap", message, e);			
+			StatusManager.getManager().handle(status, StatusManager.LOG);
 		}
-		additionalEndpoints.add(newEndpoint);
 	}
 	
 	/*
@@ -141,9 +171,12 @@ public class Activator extends AbstractUIPlugin {
 	@Override
 	public void stop(BundleContext bundleContext) throws Exception {
 		handlerTracker.close();
-		controlEndpoint.stop();
-		controlEndpoint = null;
 		
+		if(controlEndpoint != null){
+			controlEndpoint.stop();
+			controlEndpoint = null;
+		}
+
 		for (Endpoint endpoint : additionalEndpoints){
 			endpoint.stop();
 		}

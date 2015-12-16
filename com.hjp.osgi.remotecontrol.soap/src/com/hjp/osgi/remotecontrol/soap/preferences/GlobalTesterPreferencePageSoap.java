@@ -1,5 +1,6 @@
 package com.hjp.osgi.remotecontrol.soap.preferences;
 
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
@@ -55,7 +56,9 @@ public class GlobalTesterPreferencePageSoap extends FieldEditorPreferencePage im
 		IntegerFieldEditor soapInterfacePort = new IntegerFieldEditor(PreferenceConstants.P_SOAP_PORT, "Port:",
 				soapInterface);
 		addField(soapInterfacePort);
-
+		
+		BooleanFieldEditor soapDeactivate = new BooleanFieldEditor(PreferenceConstants.P_SOAP_DEACTIVATED, "Deactivate SOAP", soapInterface);
+		addField(soapDeactivate);
 	}
 
 }
