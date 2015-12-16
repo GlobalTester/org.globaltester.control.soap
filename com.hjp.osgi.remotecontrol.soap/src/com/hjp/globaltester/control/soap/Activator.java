@@ -1,15 +1,16 @@
 package com.hjp.globaltester.control.soap;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.ws.Endpoint;
 
-//import org.eclipse.jface.dialogs.MessageDialog;
-//import org.eclipse.swt.widgets.Display;
-//import org.eclipse.swt.widgets.Shell;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -57,12 +58,13 @@ public class Activator extends AbstractUIPlugin {
 		host = getPreferenceStore().getString(PreferenceConstants.P_SOAP_HOST);
 		port = getPreferenceStore().getInt(PreferenceConstants.P_SOAP_PORT);
 		
-//		if (!isSocketAvailable(host, port)) {
-//			Display display = new Display();
-//			Shell shell = new Shell(display);
-//			MessageDialog.openWarning(shell, "Warning", "Socket for SOAP already in use!\n" + "Tried Host: " + host
-//					+ " with Port " + port + "\nThis is a common issue when starting multiple GlobalTesters");
-//		}
+		// warn the User if Socket is already in use
+		if (!isSocketAvailable(host, port)) {
+			Display display = new Display();
+			Shell shell = new Shell(display);
+			MessageDialog.openWarning(shell, "Warning", "Socket for SOAP already in use!\n" + "Tried Host: " + host
+					+ " with Port " + port + "\nThis is a common issue if multiple GlobalTesters are started.");
+		}
 		
 		try {
 			controlEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/control",
@@ -150,12 +152,25 @@ public class Activator extends AbstractUIPlugin {
 		Activator.context = null;
 	}
 	
-	private static boolean isSocketInUse(String host, int port) {
-		try (Socket ignored = new Socket(host, port)) {
-			ignored.close();
+	/**
+	 * This method makes a quick check if the given Socket is already in use or
+	 * not.
+	 * 
+	 * @param host as String
+	 * @param port number as int
+	 * @return true if it already exists or false
+	 */
+	private static boolean isSocketAvailable(String host, int port) {
+		try{
+			Socket socketTester = new Socket(host, port);
+			socketTester.close();
 			return false;
-		} catch (IOException ignored) {
+		} catch (ConnectException ce) {
+			//gets thrown when host and port should be ok to use
 			return true;
-		}
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}	
 	}
 }
