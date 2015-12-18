@@ -68,17 +68,14 @@ public class Activator extends AbstractUIPlugin {
 			Display display = new Display();
 			Shell shell = new Shell(display);
 			MessageDialog.openWarning(shell, "Warning",
-					"Socket for SOAP already in use by another service!\n" + "Tried host: " + host + " with port "
-							+ port + "Please change them in your GlobalTester preferences and restart the application.\n"
-							+ "Or deactivate SOAP in the preferences to avoid this warning in the future.\n"
+					"Socket for SOAP already in use by another service!\n" + "Tried host " + host + " with port "
+							+ port + ". Please change them in your GlobalTester preferences and restart the application.\n"
+							+ "Alternatively, deactivate SOAP in the preferences to avoid this warning in the future.\n"
 							+ "This is also a common issue if multiple GlobalTesters are started.");
-		}
-		
-		try {
+			logSocketError();
+		} else {
 			controlEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/control",
 					new SoapServiceProvider(data));
-		} catch (Exception e) {
-			logSocketError();
 		}
 
 		// This will be used to keep track of handlers as they are un/registering
