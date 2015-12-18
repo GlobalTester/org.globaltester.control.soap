@@ -49,6 +49,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
 		store.setDefault(PreferenceConstants.P_SOAP_HOST, "localhost");
 		store.setDefault(PreferenceConstants.P_SOAP_PORT, 8888);
+		store.setDefault(PreferenceConstants.P_SOAP_DEACTIVATED, false);
 	}
 
 }

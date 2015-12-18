@@ -1,11 +1,20 @@
 package com.hjp.globaltester.control.soap;
 
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.ws.Endpoint;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
@@ -32,6 +41,7 @@ public class Activator extends AbstractUIPlugin {
 
 	private String host;
 	private int port;
+	private boolean soapDeactivated;
 	
 	public static BundleContext getContext() {
 		return context;
@@ -51,12 +61,21 @@ public class Activator extends AbstractUIPlugin {
 		
 		host = getPreferenceStore().getString(PreferenceConstants.P_SOAP_HOST);
 		port = getPreferenceStore().getInt(PreferenceConstants.P_SOAP_PORT);
+		soapDeactivated = getPreferenceStore().getBoolean(PreferenceConstants.P_SOAP_DEACTIVATED); 
 		
-		try {
+		// warn the User if Socket is already in use
+		if (!isSocketAvailable(host, port) && !soapDeactivated) {
+			Display display = new Display();
+			Shell shell = new Shell(display);
+			MessageDialog.openWarning(shell, "Warning",
+					"Socket for SOAP already in use by another service!\n" + "Tried host " + host + " with port "
+							+ port + ". Please change them in your GlobalTester preferences and restart the application.\n"
+							+ "Alternatively, deactivate SOAP in the preferences to avoid this warning in the future.\n"
+							+ "This is also a common issue if multiple GlobalTesters are started.");
+			logSocketError();
+		} else {
 			controlEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/control",
 					new SoapServiceProvider(data));
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 
 		// This will be used to keep track of handlers as they are un/registering
@@ -108,14 +127,18 @@ public class Activator extends AbstractUIPlugin {
 	private void handleRemoteControl(RemoteControlHandler handlerService){
 		data.addHandler(handlerService);
 		Endpoint newEndpoint;
-		if (handlerService instanceof SimulatorControl){
-			newEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/" + handlerService.getIdentifier(),
-					new SimulatorControlSoapProxy((SimulatorControl)handlerService));
-		} else {
-			newEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/" + handlerService.getIdentifier(),
-				new RemoteControlHandlerProxy(handlerService));
+		try{
+			if (handlerService instanceof SimulatorControl){
+				newEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/" + handlerService.getIdentifier(),
+						new SimulatorControlSoapProxy((SimulatorControl)handlerService));
+			} else {
+				newEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/" + handlerService.getIdentifier(),
+					new RemoteControlHandlerProxy(handlerService));
+			}
+			additionalEndpoints.add(newEndpoint);
+		} catch (Exception e) {
+			logSocketError();
 		}
-		additionalEndpoints.add(newEndpoint);
 	}
 	
 	/*
@@ -127,14 +150,55 @@ public class Activator extends AbstractUIPlugin {
 	@Override
 	public void stop(BundleContext bundleContext) throws Exception {
 		handlerTracker.close();
-		controlEndpoint.stop();
-		controlEndpoint = null;
 		
+		if(controlEndpoint != null){
+			controlEndpoint.stop();
+			controlEndpoint = null;
+		}
+
 		for (Endpoint endpoint : additionalEndpoints){
 			endpoint.stop();
 		}
 		additionalEndpoints.clear();
 		
 		Activator.context = null;
+	}
+	
+	/**
+	 * This method makes a quick check if the given Socket is already in use or
+	 * not.
+	 * 
+	 * @param host as String
+	 * @param port number as int
+	 * @return true if it already exists or false
+	 */
+	private static boolean isSocketAvailable(String host, int port) {
+		try{
+			Socket socketTester = new Socket(host, port);
+			socketTester.close();
+			return false;
+		} catch (ConnectException ce) {
+			//gets thrown when host and port should be ok to use
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}	
+	}
+	
+	/**
+	 * Adds an error (about Socket for SOAP already in use) to the eclipse
+	 * logging view
+	 */
+	private void logSocketError() {
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				if (!soapDeactivated) {
+					IStatus status = new Status(IStatus.ERROR, "com.hjp.osgi.remotecontrol.soap",
+							"Socket for SOAP is already in use by another Service");
+					StatusManager.getManager().handle(status, StatusManager.LOG);
+				}
+			}
+		});
 	}
 }
