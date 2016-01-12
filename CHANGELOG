@@ -1,0 +1,8 @@
+Version 0.1.0 (12.11.2015)
+
+* Added a preference page for the soap interface
+* moved PersoSimControlServiceTest to com.hjp.simulator.test package
+* changes for testing the composite control
+* Initial implementation of the soap adapter for the control osgi interfaces
+
+
