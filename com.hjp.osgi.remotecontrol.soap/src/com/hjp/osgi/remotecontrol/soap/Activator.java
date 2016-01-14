@@ -1,4 +1,4 @@
-package com.hjp.globaltester.control.soap;
+package com.hjp.osgi.remotecontrol.soap;
 
 import java.io.IOException;
 import java.net.ConnectException;

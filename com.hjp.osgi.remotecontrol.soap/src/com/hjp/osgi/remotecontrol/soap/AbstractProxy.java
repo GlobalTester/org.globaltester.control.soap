@@ -1,4 +1,4 @@
-package com.hjp.globaltester.control.soap;
+package com.hjp.osgi.remotecontrol.soap;
 
 /**
  * This is the root of all SOAP proxy implementations. The type parameter T

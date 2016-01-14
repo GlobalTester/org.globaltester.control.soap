@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import com.hjp.globaltester.control.soap.Activator;
+import com.hjp.osgi.remotecontrol.soap.Activator;
 
 public class GlobalTesterPreferencePageSoap extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 

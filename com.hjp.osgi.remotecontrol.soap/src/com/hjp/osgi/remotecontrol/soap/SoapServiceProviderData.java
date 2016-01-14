@@ -1,4 +1,4 @@
-package com.hjp.globaltester.control.soap;
+package com.hjp.osgi.remotecontrol.soap;
 
 import java.util.HashSet;
 import java.util.LinkedList;

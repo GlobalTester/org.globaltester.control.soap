@@ -24,7 +24,7 @@ package com.hjp.osgi.remotecontrol.soap.preferences;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 
-import com.hjp.globaltester.control.soap.Activator;
+import com.hjp.osgi.remotecontrol.soap.Activator;
 
 
 /**
