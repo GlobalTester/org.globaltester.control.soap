@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: GlobalTester Control SOAP Interface
 Bundle-SymbolicName: com.hjp.osgi.remotecontrol.soap;singleton:=true
-Bundle-Version: 0.1.0
+Bundle-Version: 0.1.1
 Bundle-Activator: com.hjp.osgi.remotecontrol.soap.Activator
 Bundle-Vendor: HJP Consulting GmbH
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
