@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Sample
+Bundle-Name: GT Control SOAP Sample
 Bundle-SymbolicName: com.hjp.globaltester.control.soap.sample
 Bundle-Version: 0.1.1
 Bundle-Activator: com.hjp.globaltester.control.soap.sample.Activator
