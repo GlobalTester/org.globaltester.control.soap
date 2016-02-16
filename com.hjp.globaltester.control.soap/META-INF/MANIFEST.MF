@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: GlobalTester Control SOAP Interface
+Bundle-Name: GT Control SOAP Interface
 Bundle-SymbolicName: com.hjp.globaltester.control.soap;singleton:=true
 Bundle-Version: 0.1.1
 Bundle-Activator: com.hjp.globaltester.control.soap.Activator
