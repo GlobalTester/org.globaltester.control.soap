@@ -1,3 +1,9 @@
+Version 0.1.2 (18.02.2016)
+
+* updated Bundle-Name to match naming conventions
+* refactor bundle c.h.osgi.remotecontrol to c.h.g.control
+
+
 Version 0.1.1 (29.01.2016)
 
 * Enhance Error logging and dialog
