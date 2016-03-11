@@ -61,12 +61,13 @@ public class Activator extends AbstractUIPlugin {
 		
 		host = getPreferenceStore().getString(PreferenceConstants.P_SOAP_HOST);
 		port = getPreferenceStore().getInt(PreferenceConstants.P_SOAP_PORT);
-		soapDeactivated = getPreferenceStore().getBoolean(PreferenceConstants.P_SOAP_DEACTIVATED); 
-		
+		soapDeactivated = getPreferenceStore().getBoolean(PreferenceConstants.P_SOAP_DEACTIVATED);
+		Display display = new Display();
+		Shell shell = new Shell(display);
 		// warn the User if Socket is already in use
 		if (!isSocketAvailable(host, port) && !soapDeactivated) {
-			Display display = new Display();
-			Shell shell = new Shell(display);
+			
+			
 			MessageDialog.openWarning(shell, "Warning",
 					"Socket for SOAP already in use by another service!\n" + "Tried host " + host + " with port "
 							+ port + ". Please change them in your GlobalTester preferences and restart the application.\n"
@@ -74,8 +75,15 @@ public class Activator extends AbstractUIPlugin {
 							+ "This is also a common issue if multiple GlobalTesters are started.");
 			logSocketError();
 		} else {
+			
+			try {
 			controlEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/control",
 					new SoapServiceProvider(data));
+			} catch (Exception e) {
+				MessageDialog.openError(shell, "Error",
+						"Server runtime error: Cannot assign requested address.\n\n" + 
+				"Please change the hoste name in your GlobalTester SOAP preferences and restart the application.");
+			}
 		}
 
 		// This will be used to keep track of handlers as they are un/registering
