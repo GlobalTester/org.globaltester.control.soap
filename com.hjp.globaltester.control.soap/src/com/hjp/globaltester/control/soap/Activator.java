@@ -1,8 +1,8 @@
 package com.hjp.globaltester.control.soap;
 
 import java.io.IOException;
-import java.net.ConnectException;
-import java.net.Socket;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,7 +12,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.BundleContext;
@@ -61,21 +60,27 @@ public class Activator extends AbstractUIPlugin {
 		
 		host = getPreferenceStore().getString(PreferenceConstants.P_SOAP_HOST);
 		port = getPreferenceStore().getInt(PreferenceConstants.P_SOAP_PORT);
-		soapDeactivated = getPreferenceStore().getBoolean(PreferenceConstants.P_SOAP_DEACTIVATED); 
+		soapDeactivated = getPreferenceStore().getBoolean(PreferenceConstants.P_SOAP_DEACTIVATED);
 		
 		// warn the User if Socket is already in use
-		if (!isSocketAvailable(host, port) && !soapDeactivated) {
-			Display display = new Display();
-			Shell shell = new Shell(display);
-			MessageDialog.openWarning(shell, "Warning",
-					"Socket for SOAP already in use by another service!\n" + "Tried host " + host + " with port "
-							+ port + ". Please change them in your GlobalTester preferences and restart the application.\n"
-							+ "Alternatively, deactivate SOAP in the preferences to avoid this warning in the future.\n"
-							+ "This is also a common issue if multiple GlobalTesters are started.");
+		if (!soapDeactivated && !isSocketAvailable(host, port)) {
+			
+			Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					MessageDialog.openWarning(null, "Warning",
+							"Socket for SOAP already in use by another service or unreachable!\n" + "Tried host " + host + " with port "
+									+ port + ". Please change them in your GlobalTester preferences and restart the application.\n"
+									+ "Alternatively, deactivate SOAP in the preferences to avoid this warning in the future.\n"
+									+ "This is also a common issue if multiple GlobalTesters are started.");
+				}
+			});
+			
 			logSocketError();
+			
 		} else {
-			controlEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/control",
-					new SoapServiceProvider(data));
+			
+			controlEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/control", new SoapServiceProvider(data));
+
 		}
 
 		// This will be used to keep track of handlers as they are un/registering
@@ -173,17 +178,20 @@ public class Activator extends AbstractUIPlugin {
 	 * @return true if it already exists or false
 	 */
 	private static boolean isSocketAvailable(String host, int port) {
-		try{
-			Socket socketTester = new Socket(host, port);
+		InetSocketAddress inetSocketAddress = new InetSocketAddress(host, port);
+		if (inetSocketAddress.getAddress() != null && (inetSocketAddress.getAddress().isAnyLocalAddress() || inetSocketAddress.getAddress().isLoopbackAddress())){
+			try{
+			ServerSocket socketTester = new ServerSocket();
+			socketTester.setSoTimeout(180);
+			socketTester.bind(inetSocketAddress);
 			socketTester.close();
-			return false;
-		} catch (ConnectException ce) {
-			//gets thrown when host and port should be ok to use
 			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
+			} catch (IOException e) {
+				return false;
+			}
+		} else {
 			return false;
-		}	
+		}
 	}
 	
 	/**
