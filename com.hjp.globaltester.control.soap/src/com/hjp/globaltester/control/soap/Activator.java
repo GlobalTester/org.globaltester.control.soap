@@ -65,7 +65,7 @@ public class Activator extends AbstractUIPlugin {
 		Display display = new Display();
 		Shell shell = new Shell(display);
 		// warn the User if Socket is already in use
-		if (!isSocketAvailable(host, port) && !soapDeactivated) {
+		if (!isSocketAvailable(host, port) && !soapDeactivated) {	
 			
 			
 			MessageDialog.openWarning(shell, "Warning",
@@ -189,9 +189,8 @@ public class Activator extends AbstractUIPlugin {
 			//gets thrown when host and port should be ok to use
 			return true;
 		} catch (IOException e) {
-			e.printStackTrace();
 			return false;
-		}	
+		}
 	}
 	
 	/**
