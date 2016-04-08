@@ -57,7 +57,7 @@ public class GlobalTesterPreferencePageSoap extends FieldEditorPreferencePage im
 				soapInterface);
 		addField(soapInterfacePort);
 		
-		BooleanFieldEditor soapDeactivate = new BooleanFieldEditor(PreferenceConstants.P_SOAP_DEACTIVATED, "Deactivate SOAP", soapInterface);
+		BooleanFieldEditor soapDeactivate = new BooleanFieldEditor(PreferenceConstants.P_SOAP_AUTOSTART, "Autostart SOAP upon bundle activation", soapInterface);
 		addField(soapDeactivate);
 	}
 

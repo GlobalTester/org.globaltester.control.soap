@@ -34,6 +34,6 @@ public class PreferenceConstants {
 	public static final String P_SOAP_HOST = "pref_soap_host";
 	public static final String P_SOAP_PORT = "pref_soap_port";
 	public static final String P_SOAP_TIMEOUT = "pref_soap_timeout";
-	public static final String P_SOAP_DEACTIVATED = "pref_soap_deactivated";
+	public static final String P_SOAP_AUTOSTART = "pref_soap_autostart";
 		
 }
