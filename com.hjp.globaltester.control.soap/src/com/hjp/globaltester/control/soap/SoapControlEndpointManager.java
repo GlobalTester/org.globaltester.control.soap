@@ -61,7 +61,7 @@ public class SoapControlEndpointManager extends AbstractGtService {
 				public void run() {
 					MessageDialog.openWarning(null, "Warning",
 							"Socket for SOAP already in use by another service or unreachable!\n" + "Tried host " + host + " with port "
-									+ port + ". Please change them in your GlobalTester preferences and restart the application.\n"
+									+ port + ". Please change them in your GlobalTester preferences and restart the service.\n"
 									+ "Alternatively, deactivate SOAP in the preferences to avoid this warning in the future.\n"
 									+ "This is also a common issue if multiple GlobalTesters are started.");
 				}
