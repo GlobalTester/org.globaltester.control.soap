@@ -1,5 +1,8 @@
-Version 0.1.3 (29.02.2016)
+Version 0.2.0 (06.05.2016)
 
+* Set all build relevant settings to Java 1.8
+* Register SoapControl as GtService
+* Add LICENSE and NOTICE files to gitattributes
 * Code maintenance
 
 
