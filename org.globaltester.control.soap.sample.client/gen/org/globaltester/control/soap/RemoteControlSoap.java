@@ -17,12 +17,12 @@ import net.java.dev.jaxb.array.StringArray;
  * Generated source version: 2.2
  * 
  */
-@WebService(name = "SoapServiceProvider", targetNamespace = "http://soap.control.globaltester.org/")
+@WebService(name = "RemoteControlSoap", targetNamespace = "http://soap.control.globaltester.org/")
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 @XmlSeeAlso({
     ObjectFactory.class
 })
-public interface SoapServiceProvider {
+public interface RemoteControlSoap {
 
 
     /**
@@ -32,7 +32,7 @@ public interface SoapServiceProvider {
      */
     @WebMethod
     @WebResult(partName = "return")
-    @Action(input = "http://soap.control.globaltester.org/SoapServiceProvider/getAvailableHandlersRequest", output = "http://soap.control.globaltester.org/SoapServiceProvider/getAvailableHandlersResponse")
+    @Action(input = "http://soap.control.globaltester.org/RemoteControlSoap/getAvailableHandlersRequest", output = "http://soap.control.globaltester.org/RemoteControlSoap/getAvailableHandlersResponse")
     public StringArray getAvailableHandlers();
 
 }

@@ -69,7 +69,7 @@ public class SoapControlEndpointManager extends AbstractGtService {
 			
 		} else {
 			
-			controlEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/control", new SoapServiceProvider(data));
+			controlEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/RemoteControl", new RemoteControlSoap(data));
 
 		}
 

@@ -18,10 +18,10 @@ import org.globaltester.control.soap.JaxWsSoapAdapter;
  */
 @WebService
 @SOAPBinding(style = Style.RPC)
-public class SampleSoapService extends AbstractRemoteControlHandler implements JaxWsSoapAdapter {
+public class SoapSample extends AbstractRemoteControlHandler implements JaxWsSoapAdapter {
 	@Override
 	public String getIdentifier() {
-		return "SampleService";
+		return "SoapSample";
 	}
 
 	@WebMethod

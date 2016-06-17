@@ -11,7 +11,7 @@ public class Activator implements BundleActivator {
 
 	@Override
 	public void start(BundleContext context) throws Exception {
-		RemoteControlHandler dummyService = new SampleSoapService();
+		RemoteControlHandler dummyService = new SoapSample();
 		serviceRegistration = context.registerService(RemoteControlHandler.class, dummyService, null);
 	}
 

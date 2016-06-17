@@ -7,11 +7,11 @@ import javax.jws.soap.SOAPBinding.Style;
 
 @WebService
 @SOAPBinding(style = Style.RPC)
-public class SoapServiceProvider {
+public class RemoteControlSoap {
 	
 	private SoapServiceProviderData data;
 
-	public SoapServiceProvider(SoapServiceProviderData data) {
+	public RemoteControlSoap(SoapServiceProviderData data) {
 		this.data = data;
 	}
 	
