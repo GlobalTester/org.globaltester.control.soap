@@ -1,4 +1,4 @@
-package org.globaltester.control.soap.sample;
+package org.globaltester.control.soap.sample.client;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -9,8 +9,6 @@ import org.globaltester.control.soap.SoapServiceProvider;
 import org.globaltester.control.soap.SoapServiceProviderService;
 
 import net.java.dev.jaxb.array.StringArray;
-
-import com.hjp.simulator.SimulatorControl;
 
 /**
  * This sample client is based on JAX-WS generated code using wsimport. The root
@@ -23,6 +21,7 @@ import com.hjp.simulator.SimulatorControl;
  * in this bundle.
  * 
  * @author mboonk
+ * @author amay
  *
  */
 public class SampleSoapClient {
@@ -39,7 +38,7 @@ public class SampleSoapClient {
 		for (String string : port.getAvailableHandlers().getItem()) {
 			System.out.println("Handler: " + string);
 			if (string.equals("SimulatorControl")) {
-				useSimulator(new URL("http://localhost:8888/globaltester/" + string));
+//				useSimulator(new URL("http://localhost:8888/globaltester/" + string));
 			}
 		}
 	}

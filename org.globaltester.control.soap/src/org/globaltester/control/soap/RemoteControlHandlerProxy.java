@@ -32,4 +32,12 @@ public class RemoteControlHandlerProxy extends AbstractProxy<RemoteControlHandle
 		return handler.getType();
 	}
 
+	@Override
+	public <T> T getAdapter(Class<T> that) {
+		if (that.isAssignableFrom(this.getClass())) {
+			return that.cast(this);
+		}
+		return null;
+	}
+
 }

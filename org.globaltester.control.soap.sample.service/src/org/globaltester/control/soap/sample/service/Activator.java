@@ -1,4 +1,4 @@
-package org.globaltester.control.soap.sample;
+package org.globaltester.control.soap.sample.service;
 
 import org.globaltester.control.RemoteControlHandler;
 import org.osgi.framework.BundleActivator;
