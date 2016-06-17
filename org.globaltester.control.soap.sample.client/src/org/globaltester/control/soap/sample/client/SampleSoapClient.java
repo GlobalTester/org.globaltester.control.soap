@@ -52,7 +52,7 @@ public class SampleSoapClient {
 		return port.getAvailableHandlers().getItem();
 	}
 	
-	private String soapSampleHelloWorld() {
+	public String soapSampleHelloWorld() {
 		SoapSampleService soapSampleService = new SoapSampleService();
 		SoapSample soapSample = soapSampleService.getSoapSamplePort();
 		return soapSample.helloWorld();
