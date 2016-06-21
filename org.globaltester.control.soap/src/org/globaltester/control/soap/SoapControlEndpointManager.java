@@ -20,8 +20,6 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
-import com.hjp.simulator.SimulatorControl;
-
 /**
  * This manages the services needed to supply the SOAP {@link Endpoint}
  * @author mboonk
@@ -71,7 +69,7 @@ public class SoapControlEndpointManager extends AbstractGtService {
 			
 		} else {
 			
-			controlEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/control", new SoapServiceProvider(data));
+			controlEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/RemoteControl", new RemoteControlSoap(data));
 
 		}
 
@@ -143,13 +141,13 @@ public class SoapControlEndpointManager extends AbstractGtService {
 		data.addHandler(handlerService);
 		Endpoint newEndpoint;
 		try{
-			if (handlerService instanceof SimulatorControl){
-				newEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/" + handlerService.getIdentifier(),
-						new SimulatorControlSoapProxy((SimulatorControl)handlerService));
-			} else {
-				newEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/" + handlerService.getIdentifier(),
-					new RemoteControlHandlerProxy(handlerService));
+			JaxWsSoapAdapter handlerAdapter = handlerService.getAdapter(JaxWsSoapAdapter.class);
+			if (handlerAdapter == null){
+				return;
 			}
+			
+			newEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/" + handlerService.getIdentifier(),
+						handlerAdapter);
 			additionalEndpoints.add(newEndpoint);
 		} catch (Exception e) {
 			logSocketError();

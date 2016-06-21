@@ -1,0 +1,3 @@
+export LANG=C
+wsimport -keep -verbose http://localhost:8888/globaltester/RemoteControl?wsdl -d gen
+wsimport -keep -verbose http://localhost:8888/globaltester/SoapSample?wsdl -d gen
