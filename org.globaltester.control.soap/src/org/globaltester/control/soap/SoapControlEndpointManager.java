@@ -51,6 +51,11 @@ public class SoapControlEndpointManager extends AbstractGtService {
 
 		host = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_SOAP_HOST);
 		port = Activator.getDefault().getPreferenceStore().getInt(PreferenceConstants.P_SOAP_PORT);
+		
+		String portProperty = System.getProperty("org.globaltester.control.soap.port");
+		if (portProperty != null) { 
+			port = Integer.parseInt(portProperty);
+		}
 
 		// warn the User if Socket is already in use
 		if (!isSocketAvailable(host, port)) {
