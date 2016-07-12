@@ -25,6 +25,10 @@
           </includes>
 	  <useUIHarness>false</useUIHarness>
 	  <product>org.globaltester.platform.product</product>
+	  <systemProperties>
+		  <org.globaltester.control.soap.port>${org.globaltester.control.soap.port}</org.globaltester.control.soap.port>
+
+	  </systemProperties>
         </configuration>
       </plugin>
     </plugins>

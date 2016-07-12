@@ -53,8 +53,10 @@ public class SoapControlEndpointManager extends AbstractGtService {
 		port = Activator.getDefault().getPreferenceStore().getInt(PreferenceConstants.P_SOAP_PORT);
 		
 		String portProperty = System.getProperty("org.globaltester.control.soap.port");
-		if (portProperty != null) { 
+		try { 
 			port = Integer.parseInt(portProperty);
+		} catch (NumberFormatException e) {
+			//ignore intentionally, don't use unparseable values from properties   
 		}
 
 		// warn the User if Socket is already in use
