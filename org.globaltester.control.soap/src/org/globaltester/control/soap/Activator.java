@@ -43,7 +43,6 @@ public class Activator extends AbstractUIPlugin {
 		gtServiceRegistration = context.registerService(GtService.class, endpointManager, new Hashtable<String, String>());
 		
 		//handle autostart
-		//FIXME refactor preferences accordingly
 		boolean autostart = getPreferenceStore().getBoolean(PreferenceConstants.P_SOAP_AUTOSTART);
 		if (autostart) {
 			endpointManager.start();
