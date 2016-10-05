@@ -9,6 +9,6 @@ Bundle-ActivationPolicy: lazy
 Export-Package: net.java.dev.jaxb.array,
  org.globaltester.control.soap,
  org.globaltester.control.soap.sample.client
-Bundle-Vendor: HJP Consulting GmbH
+Bundle-Vendor: secunet Security Networks AG
 Bundle-ClassPath: gen/,
  .
