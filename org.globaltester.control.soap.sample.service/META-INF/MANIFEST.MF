@@ -10,5 +10,5 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: org.globaltester.control,
  org.globaltester.control.soap;bundle-version="0.2.0"
 Export-Package: org.globaltester.control.soap.sample.service
-Bundle-Vendor: HJP Consulting GmbH
+Bundle-Vendor: secunet Security Networks AG
 Bundle-ClassPath: .
