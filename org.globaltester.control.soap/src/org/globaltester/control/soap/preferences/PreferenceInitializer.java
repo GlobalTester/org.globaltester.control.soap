@@ -1,24 +1,3 @@
-/* 
- * Project 	GlobalTester-Plugin 
- * File		PreferencesInitializer.java
- *
- * Date    	14.06.2011
- * 
- * 
- * Developed by HJP Consulting GmbH
- * Hauptstr. 35
- * 33175 Borchen
- * Germany
- * 
- * 
- * This software is the confidential and proprietary information
- * of HJP ("Confidential Information"). You shall not disclose such
- * Confidential Information and shall use it only in accordance 
- * with the terms of the Non-Disclosure Agreement you entered 
- * into with HJP.
- * 
- */
-
 package org.globaltester.control.soap.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
