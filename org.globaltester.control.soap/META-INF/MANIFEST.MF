@@ -12,5 +12,6 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: org.globaltester.control;bundle-version="0.0.1",
  org.eclipse.ui,
  org.eclipse.core.runtime,
- org.globaltester.service
+ org.globaltester.service,
+ org.globaltester.base
 Export-Package: org.globaltester.control.soap

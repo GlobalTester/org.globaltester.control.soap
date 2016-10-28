@@ -1,8 +1,5 @@
 package org.globaltester.control.soap;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,6 +10,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.statushandlers.StatusManager;
+import org.globaltester.base.utils.Utils;
 import org.globaltester.control.RemoteControlHandler;
 import org.globaltester.control.soap.preferences.PreferenceConstants;
 import org.globaltester.service.AbstractGtService;
@@ -60,7 +58,7 @@ public class SoapControlEndpointManager extends AbstractGtService {
 		}
 
 		// warn the User if Socket is already in use
-		if (!isSocketAvailable(host, port)) {
+		if (!Utils.isSocketAvailable(host, port)) {
 			
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
@@ -158,31 +156,6 @@ public class SoapControlEndpointManager extends AbstractGtService {
 			additionalEndpoints.add(newEndpoint);
 		} catch (Exception e) {
 			logSocketError();
-		}
-	}
-	
-	/**
-	 * This method makes a quick check if the given Socket is already in use or
-	 * not.
-	 * 
-	 * @param host as String
-	 * @param port number as int
-	 * @return true if it already exists or false
-	 */
-	private static boolean isSocketAvailable(String host, int port) {
-		InetSocketAddress inetSocketAddress = new InetSocketAddress(host, port);
-		if (inetSocketAddress.getAddress() != null && (inetSocketAddress.getAddress().isAnyLocalAddress() || inetSocketAddress.getAddress().isLoopbackAddress())){
-			try{
-			ServerSocket socketTester = new ServerSocket();
-			socketTester.setSoTimeout(180);
-			socketTester.bind(inetSocketAddress);
-			socketTester.close();
-			return true;
-			} catch (IOException e) {
-				return false;
-			}
-		} else {
-			return false;
 		}
 	}
 	
