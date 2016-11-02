@@ -1,5 +1,6 @@
 package org.globaltester.control.soap;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.statushandlers.StatusManager;
+import org.globaltester.base.PreferenceHelper;
 import org.globaltester.base.utils.Utils;
 import org.globaltester.control.RemoteControlHandler;
 import org.globaltester.control.soap.preferences.PreferenceConstants;
@@ -25,6 +27,7 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  */
 public class SoapControlEndpointManager extends AbstractGtService {
 
+	private static final int MAX_TRIES = 10;
 	private Endpoint controlEndpoint;
 	private List<Endpoint> additionalEndpoints;
 	private SoapServiceProviderData data = new SoapServiceProviderData();
@@ -57,9 +60,22 @@ public class SoapControlEndpointManager extends AbstractGtService {
 			//ignore intentionally, don't use unparseable values from properties   
 		}
 
-		// warn the User if Socket is already in use
-		if (!Utils.isSocketAvailable(host, port)) {
-			
+		try {
+			if (port == 0){
+				for (int i = 0; i < MAX_TRIES; i++){
+					try{
+						port = Utils.getAvailablePort();
+						controlEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/RemoteControl", new RemoteControlSoap(data));
+						PreferenceHelper.setPreferenceValue(Activator.getContext().getBundle().getSymbolicName(), PreferenceConstants.P_SOAP_PORT, port + "");
+						break;
+					} catch (RuntimeException | IOException e){
+						// do nothing and try again
+					}
+				}
+			} else {
+				controlEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/RemoteControl", new RemoteControlSoap(data));
+			}
+		} catch (RuntimeException e){
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					MessageDialog.openWarning(null, "Warning",
@@ -71,14 +87,10 @@ public class SoapControlEndpointManager extends AbstractGtService {
 			});
 			
 			logSocketError();
-			
-		} else {
-			
-			controlEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/RemoteControl", new RemoteControlSoap(data));
-
 		}
 
 		// This will be used to keep track of handlers as they are un/registering
+		additionalEndpoints = new LinkedList<>();
 		handlerCustomizer = new ServiceTrackerCustomizer<RemoteControlHandler, RemoteControlHandler>() {
 			
 			@Override
@@ -115,7 +127,6 @@ public class SoapControlEndpointManager extends AbstractGtService {
 			}
 		};
 		
-		additionalEndpoints = new LinkedList<>();
 		handlerTracker = new ServiceTracker<>(Activator.getContext(), RemoteControlHandler.class, handlerCustomizer);
 		handlerTracker.open();
 		
@@ -171,5 +182,5 @@ public class SoapControlEndpointManager extends AbstractGtService {
 				StatusManager.getManager().handle(status, StatusManager.LOG);
 			}
 		});
-	}
+	} 
 }

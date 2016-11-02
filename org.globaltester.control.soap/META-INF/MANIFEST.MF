@@ -14,4 +14,5 @@ Require-Bundle: org.globaltester.control;bundle-version="0.0.1",
  org.eclipse.core.runtime,
  org.globaltester.service,
  org.globaltester.base
-Export-Package: org.globaltester.control.soap
+Export-Package: org.globaltester.control.soap,
+ org.globaltester.control.soap.preferences
