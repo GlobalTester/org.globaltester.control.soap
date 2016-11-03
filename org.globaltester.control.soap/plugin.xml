@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="com.hjp.globaltester.prove.epareader.preferences.GlobalTesterPreferencePageEidClient"
+            category="org.globaltester.preferences.GlobalTesterPreferencePage"
             class="org.globaltester.control.soap.preferences.GlobalTesterPreferencePageSoap"
             id="com.hjp.globaltester.control.soap.preferences"
             name="SOAP Interface">
