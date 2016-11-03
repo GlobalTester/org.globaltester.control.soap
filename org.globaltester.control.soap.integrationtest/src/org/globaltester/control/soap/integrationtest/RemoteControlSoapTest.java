@@ -7,7 +7,9 @@ import java.net.URL;
 
 import org.globaltester.PlatformHelper;
 import org.globaltester.base.PreferenceHelper;
+import org.globaltester.control.soap.SoapControlEndpointManager;
 import org.globaltester.control.soap.sample.client.SampleSoapClient;
+import org.globaltester.service.GtService;
 import org.junit.Test;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
@@ -23,6 +25,11 @@ public class RemoteControlSoapTest {
 		PlatformHelper.stopBundle(org.globaltester.control.soap.Activator.class.getPackage().getName(), bc);
 		PreferenceHelper.setPreferenceValue("org.globaltester.control.soap", org.globaltester.control.soap.preferences.PreferenceConstants.P_SOAP_PORT, 0 + "");
 		PlatformHelper.startBundle(org.globaltester.control.soap.Activator.class.getPackage().getName(), bc);
+		for (GtService service : org.globaltester.service.Activator.getAvailableGtServices()){
+			if (service instanceof SoapControlEndpointManager){
+				service.start();
+			}
+		}
 		int controlEndpointPort = Integer.parseInt(PreferenceHelper.getPreferenceValue("org.globaltester.control.soap", org.globaltester.control.soap.preferences.PreferenceConstants.P_SOAP_PORT));
 		
 		PlatformHelper.startBundle(org.globaltester.control.soap.sample.service.Activator.class.getPackage().getName(), bc);
