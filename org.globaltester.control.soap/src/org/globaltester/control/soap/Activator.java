@@ -53,8 +53,12 @@ public class Activator extends AbstractUIPlugin {
 	
 	@Override
 	public void stop(BundleContext bundleContext) throws Exception {
-		endpointManager.stop();
-		gtServiceRegistration.unregister();
+		if (endpointManager != null && endpointManager.isRunning()){
+			endpointManager.stop();	
+		}
+		if (gtServiceRegistration != null){
+			gtServiceRegistration.unregister();	
+		}
 		context = null;
 	}
 
