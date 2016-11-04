@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+<title>SOAP Interface</title>
+</head>
+<body>
+	<h2>SOAP Interface</h2>
+
+	<p>The SOAP implementation for remote control allows accessing
+		GlobalTester features from local or remote clients for test
+		environment integration purposes.</p>
+	<p>
+		A modular design is used for providing the wanted services. A generic
+		service is available that allows to query what Services are available
+		and on what URLs they can be reached. This service is published under
+		a URL of the form
+		<code>http://host:port/globaltester/RemoteControl.wsdl</code>
+		using host and port as configured in the SOAP preferences. If you are
+		using default settings, you can use this URL to access the WSDL file
+		for this service on a currently running GlobalTester instance:
+		<code>http://localhost:8888/globaltester/RemoteControl?wsdl</code>
+		.
+	</p>
+	<p>The actually published services will be available using similar
+		URLs. The "RemoteControl" part is exchanged with the published service
+		name as retrieved from the generic service. Then the WSDL file can be
+		retrieved exactly as the generic one.</p>
+</body>
+</html>

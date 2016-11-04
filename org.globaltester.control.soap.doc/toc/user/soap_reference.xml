@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toc label="Book" link_to="/org.globaltester.control.doc/toc/user/remotecontrol_reference.xml#remotecontrol">
+   <topic href="html/user/soap_reference.html" label="SOAP Interface">
+      <topic href="html/user/soap_testcontrol.html" label="Remote test case execution">
+      </topic>
+   </topic>
+</toc>
