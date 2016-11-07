@@ -53,7 +53,12 @@ public class GlobalTesterPreferencePageSoap extends FieldEditorPreferencePage im
 		addField(soapInterfaceHost);
 
 		IntegerFieldEditor soapInterfacePort = new IntegerFieldEditor(PreferenceConstants.P_SOAP_PORT, "Port:",
-				soapInterface);
+				soapInterface){
+			@Override
+			protected boolean doCheckState() {
+				return super.doCheckState() && getIntValue() > 0 && getIntValue() <= 65535;
+			}
+		};
 		addField(soapInterfacePort);
 		
 		BooleanFieldEditor soapDeactivate = new BooleanFieldEditor(PreferenceConstants.P_SOAP_AUTOSTART, "Autostart SOAP upon bundle activation", soapInterface);
