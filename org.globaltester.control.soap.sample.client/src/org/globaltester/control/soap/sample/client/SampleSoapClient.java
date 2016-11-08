@@ -38,7 +38,7 @@ public class SampleSoapClient {
 		//call HelloWorld on the SoapSample
 		System.out.println();
 		System.out.println("Try calling HelloWorld from SoapSample...");
-		String helloWorld = client.soapSampleHelloWorld(null);
+		String helloWorld = soapSampleHelloWorld(null);
 		System.out.println(helloWorld);
 	}
 
@@ -58,7 +58,7 @@ public class SampleSoapClient {
 		return port.getAvailableHandlers().getItem();
 	}
 	
-	public String soapSampleHelloWorld(URL serviceUrl) {
+	public static String soapSampleHelloWorld(URL serviceUrl) {
 		SoapSampleService soapSampleService = serviceUrl == null ? new SoapSampleService() : new SoapSampleService(serviceUrl);
 		SoapSample soapSample = soapSampleService.getSoapSamplePort();
 		return soapSample.helloWorld();
