@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SOAP interface documentation
+Bundle-SymbolicName: org.globaltester.control.soap.doc;singleton:=true
+Bundle-Version: 0.1.0.qualifier
+Bundle-Vendor: secunet Security Networks AG
+Require-Bundle: org.eclipse.help

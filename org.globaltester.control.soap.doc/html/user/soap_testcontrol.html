@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+<title>Remote test case execution</title>
+</head>
+<body>
+	<h2>Remote test case execution</h2>
+
+	<p>The remote control SOAP service consists of two different
+		published endpoints. The SOAP endpoint for controlling the test
+		execution in the GlobalTester presents the available methods and data
+		types.</p>
+	<p>
+		To allow bidirectional communication, the callback must be available
+		as a SOAP endpoint itself. The WSDL for this can be found at the URL
+		<code>http://host:port/globaltester/DummyControl?wsdl</code>
+		as described <a href="soap_reference.html">here</a>. Allowed Objects
+		that can be transfered via the given methods are described in the
+		schema available at
+		<code>http://host:port/globaltester/DummyCallback?xsd=1</code>.
+		The published sample callback can be used for the test control interface with the following behaviour:
+		<ul>
+			<li>Dismiss/Ignore all notifications</li>
+			<li>Choose the first available answer to all user entry prompts</li>
+		</ul>
+		  
+	<p>
+		For reference there are implementations in the
+		<code>com.secunet.globaltester.testcontrol.soap.consumer</code>
+		and
+		<code>com.secunet.globaltester.testcontrol.callback.soap.provider
+		</code>
+		bundles.
+	</p>
+</body>
+</html>
