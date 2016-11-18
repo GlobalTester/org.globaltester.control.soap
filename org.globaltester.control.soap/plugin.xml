@@ -6,7 +6,7 @@
       <page
             category="org.globaltester.preferences.GlobalTesterPreferencePage"
             class="org.globaltester.control.soap.preferences.GlobalTesterPreferencePageSoap"
-            id="com.hjp.globaltester.control.soap.preferences"
+            id="com.secunet.globaltester.control.soap.preferences"
             name="SOAP Interface">
       </page>
    </extension>
