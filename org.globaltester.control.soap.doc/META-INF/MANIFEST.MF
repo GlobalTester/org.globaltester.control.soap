@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SOAP interface documentation
+Bundle-Name: GT SOAP interface Doc
 Bundle-SymbolicName: org.globaltester.control.soap.doc;singleton:=true
 Bundle-Version: 3.2.1.qualifier
 Bundle-Vendor: secunet Security Networks AG

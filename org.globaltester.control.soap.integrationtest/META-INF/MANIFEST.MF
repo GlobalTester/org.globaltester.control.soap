@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: GlobalTester REmoteControl SOAP Integrationtest
+Bundle-Name: GT RemoteControl SOAP Integration Test
 Bundle-SymbolicName: org.globaltester.control.soap.integrationtest
 Bundle-Version: 3.2.1.qualifier
 Bundle-Vendor: secunet Security Networks AG
