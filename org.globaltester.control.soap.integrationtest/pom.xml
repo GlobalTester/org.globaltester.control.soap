@@ -3,9 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.globaltester</groupId>
-    <artifactId>org.globaltester.parent</artifactId>
+    <artifactId>org.globaltester.parent.crossover</artifactId>
     <version>3.2.3-SNAPSHOT</version>
-    <relativePath>../../org.globaltester.parent/org.globaltester.parent</relativePath>
+    <relativePath>../../org.globaltester.parent/org.globaltester.parent.crossover</relativePath>
   </parent>
   
   <groupId>org.globaltester</groupId>
@@ -13,24 +13,4 @@
   <version>3.2.3-SNAPSHOT</version>
   <packaging>eclipse-test-plugin</packaging>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-surefire-plugin</artifactId>
-        <version>${tycho.version}</version>
-        <configuration>
-          <includes>
-            <include>**/*Test.class</include>
-          </includes>
-	  <useUIHarness>false</useUIHarness>
-	  <product>org.globaltester.platform.product</product>
-	  <systemProperties>
-		  <org.globaltester.control.soap.port>${org.globaltester.control.soap.port}</org.globaltester.control.soap.port>
-
-	  </systemProperties>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>
