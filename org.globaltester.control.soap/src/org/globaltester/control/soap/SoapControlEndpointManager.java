@@ -76,6 +76,8 @@ public class SoapControlEndpointManager extends AbstractGtService {
 				controlEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/RemoteControl", new RemoteControlSoap(data));
 			}
 		} catch (RuntimeException e){
+			e.printStackTrace();
+			System.exit(0);
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					MessageDialog.openWarning(null, "Warning",

@@ -13,6 +13,7 @@ Require-Bundle: org.globaltester.control;bundle-version="0.0.1",
  org.eclipse.ui,
  org.eclipse.core.runtime,
  org.globaltester.service,
- org.globaltester.base
+ org.globaltester.base,
+ org.globaltester.lib.jaxws
 Export-Package: org.globaltester.control.soap,
  org.globaltester.control.soap.preferences
