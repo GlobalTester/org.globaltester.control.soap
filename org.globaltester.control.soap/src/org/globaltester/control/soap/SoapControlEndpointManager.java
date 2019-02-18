@@ -15,6 +15,7 @@ import org.globaltester.base.PreferenceHelper;
 import org.globaltester.base.utils.Utils;
 import org.globaltester.control.RemoteControlHandler;
 import org.globaltester.control.soap.preferences.PreferenceConstants;
+import org.globaltester.logging.BasicLogger;
 import org.globaltester.service.AbstractGtService;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
@@ -76,8 +77,6 @@ public class SoapControlEndpointManager extends AbstractGtService {
 				controlEndpoint = Endpoint.publish("http://" + host + ":" + port + "/globaltester/RemoteControl", new RemoteControlSoap(data));
 			}
 		} catch (RuntimeException e){
-			e.printStackTrace();
-			System.exit(0);
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					MessageDialog.openWarning(null, "Warning",
@@ -87,6 +86,8 @@ public class SoapControlEndpointManager extends AbstractGtService {
 									+ "This is also a common issue if multiple GlobalTesters are started.");
 				}
 			});
+			
+			BasicLogger.logException(getClass(), "Error during soap end point publishing", e);
 			
 			logSocketError();
 		}
