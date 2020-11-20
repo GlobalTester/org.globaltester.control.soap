@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import javax.xml.ws.Endpoint;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.globaltester.control.RemoteControlHandler;
 import org.globaltester.control.soap.preferences.PreferenceConstants;
 import org.globaltester.service.GtService;
 import org.osgi.framework.BundleContext;
@@ -29,7 +30,13 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	private SoapControlEndpointManager endpointManager;
+	private PreferenceManagerSoap preferenceManager;
+	private PropertyManagerSoap propertyManager;
+	private WorkspaceManagerSoap workspaceManager;
 	private ServiceRegistration<GtService> gtServiceRegistration;
+	private ServiceRegistration<RemoteControlHandler> preferenceManagerRegistration;
+	private ServiceRegistration<RemoteControlHandler> propertyManagerRegistration;
+	private ServiceRegistration<RemoteControlHandler> workspaceManagerRegistration;
 	
 	
 
@@ -41,6 +48,15 @@ public class Activator extends AbstractUIPlugin {
 		//register endpointManager as GtService
 		endpointManager = new SoapControlEndpointManager();
 		gtServiceRegistration = context.registerService(GtService.class, endpointManager, new Hashtable<String, String>());
+		
+		preferenceManager = new PreferenceManagerSoap();
+		preferenceManagerRegistration = context.registerService(RemoteControlHandler.class, preferenceManager, new Hashtable<String, String>());
+
+		propertyManager = new PropertyManagerSoap();
+		propertyManagerRegistration = context.registerService(RemoteControlHandler.class, propertyManager, new Hashtable<String, String>());
+
+		workspaceManager = new WorkspaceManagerSoap();
+		workspaceManagerRegistration = context.registerService(RemoteControlHandler.class, workspaceManager, new Hashtable<String, String>());
 		
 		//handle autostart
 		boolean autostart = getPreferenceStore().getBoolean(PreferenceConstants.P_SOAP_AUTOSTART);
@@ -58,6 +74,15 @@ public class Activator extends AbstractUIPlugin {
 		}
 		if (gtServiceRegistration != null){
 			gtServiceRegistration.unregister();	
+		}
+		if (preferenceManagerRegistration != null){
+			preferenceManagerRegistration.unregister();	
+		}
+		if (propertyManagerRegistration != null){
+			propertyManagerRegistration.unregister();	
+		}
+		if (workspaceManagerRegistration != null){
+			workspaceManagerRegistration.unregister();	
 		}
 		context = null;
 	}
