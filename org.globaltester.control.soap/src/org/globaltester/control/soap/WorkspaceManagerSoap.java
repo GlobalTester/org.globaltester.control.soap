@@ -35,7 +35,7 @@ public class WorkspaceManagerSoap extends AbstractRemoteControlHandler implement
         try {
             ResourcesPlugin.getWorkspace().getRoot().getProject(name).refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
         } catch (Throwable e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }
