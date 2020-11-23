@@ -31,10 +31,23 @@ public class PreferenceManagerSoap extends AbstractRemoteControlHandler implemen
     @WebMethod
     public void setPreferenceValue(String bundle, String key, String value) {
     	PreferenceHelper.setPreferenceValue(bundle, key, value);
+    	PreferenceHelper.flush(bundle);
+    }
+	
+    @WebMethod
+    public void unsetPreferenceValue(String bundle, String key) {
+    	PreferenceHelper.unsetPreferenceValue(bundle, key);
+    	PreferenceHelper.flush(bundle);
+    }
+	
+    @WebMethod
+    public boolean isSet(String bundle, String key) {
+    	return PreferenceHelper.getPreferenceValue(bundle, key) != null;
     }
 	
     @WebMethod
     public String getPreferenceValue(String bundle, String key) {
-    	return PreferenceHelper.getPreferenceValue(bundle, key);
+    	String prefValue = PreferenceHelper.getPreferenceValue(bundle, key);
+    	return prefValue == null ? "" : prefValue;
     }
 }
